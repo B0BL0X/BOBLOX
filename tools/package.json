@@ -1,0 +1,12 @@
+{
+  "name": "boblox-tools",
+  "private": true,
+  "description": "Offline helper scripts (not needed to run the site).",
+  "type": "module",
+  "scripts": {
+    "convert-figure": "node figure/convert.mjs figure/2006Figure.fbx ../public_html/Asset/Figure/2006Figure.json"
+  },
+  "devDependencies": {
+    "three": "0.160.0"
+  }
+}
