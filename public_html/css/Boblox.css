@@ -1,0 +1,171 @@
+/* Styles for the profile hoster pages (loaded after AllCSS.css). */
+
+#Body { display: block; position: static; min-height: 300px; }
+#Banner #Logo img { margin-top: 0; }
+#Banner #Authentication { font-size: 11px; font-weight: bold; text-align: left; }
+#Banner #Options #Settings { font-size: 11px; }
+#Banner #Alerts #AlertSpace { margin-top: 8px; font-size: 11px; }
+#Header .Navigation a { padding: 0 2px; }
+
+.Panel { background: #fff; margin-bottom: 10px; text-align: left; }
+.Panel h4 { font-family: Verdana, Sans-Serif; font-size: 1.3em; font-weight: normal; letter-spacing: .05em; line-height: 1.6em; }
+.PanelContent { padding: 8px 10px; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.PanelFooter { border-top: solid 1px #bbb; margin-top: 6px; padding: 4px; text-align: center; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.Faded { color: #777; }
+.Hint { color: #777; font-size: 10px; }
+.Label { font-weight: bold; }
+.validationWarningSmall { color: red; font-weight: bold; margin: 4px 0 8px 0; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.StatusMessage { color: #2a7a2a; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.StatusMessage.Error { color: red; font-weight: bold; }
+.Button { display: inline-block; margin: 2px 0; text-decoration: none !important; }
+a.Button:link, a.Button:visited { color: #333; border-color: #333; }
+a.Button:hover { color: #fff; }
+.Button.Busy { opacity: .6; cursor: wait; }
+input.Button { padding: 3px 10px; }
+.TextBox { border: solid 1px #777; padding: 3px; font-size: 12px; }
+textarea { font-size: 12px; padding: 3px; border: solid 1px #777; }
+.AdminPanel { margin-top: 10px; }
+.AdminTag { background: #000; color: #fff; font-size: 9px; padding: 0 3px; }
+.BulletList { margin: 8px 0 0 18px; padding: 0; line-height: 1.8em; }
+.Pager { clear: both; text-align: center; padding: 8px 0 2px 0; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.Pager span { margin: 0 6px; }
+.WelcomeNote { border: 2px solid #f5cd30; background: #fff8d8; padding: 8px 10px; margin-bottom: 10px; font-family: Verdana, Sans-Serif; font-size: 12px; }
+
+/* Forms */
+.FormPage { width: 600px; margin: 0 auto; }
+.FormPage .Label { text-align: right; white-space: nowrap; }
+.CreateTabs { border-bottom: 1px solid #000; margin-bottom: 10px; padding-left: 4px; }
+.CreateTabs a { display: inline-block; border: 1px solid #000; border-bottom: none; background: #ddd; padding: 3px 9px; margin-right: 2px; position: relative; top: 1px; color: #333 !important; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.CreateTabs a.Selected { background: #fff; font-weight: bold; padding-bottom: 4px; }
+.CreateTabs a:hover { background: #6e99c9; color: #fff !important; text-decoration: none; }
+.CreateTabs a.Selected:hover { background: #fff; color: #333 !important; }
+.TemplatePreview { border: 1px solid #000; background: #eee; }
+
+/* Home */
+#HomeColumns { margin-top: 15px; }
+#NewestMembers { float: left; width: 560px; }
+#SiteStats { float: right; width: 300px; text-align: center; }
+#SiteStats .PanelContent { text-align: left; }
+#SiteStats .PanelContent > a > img { display: block; margin: 0 auto; }
+#SiteStats p { margin: 4px 0 12px 0; line-height: 1.5em; }
+#SiteStats .Stats { clear: both; text-align: center; border-top: 1px solid #ddd; padding-top: 6px; }
+.UserTile { float: left; width: 128px; height: 130px; text-align: center; overflow: hidden; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.UserTile img { border: 1px solid #ccc; background: #fff; }
+
+/* Profile */
+#UserContainer #LeftBank, #UserContainer #RightBank { text-align: left; }
+#ProfilePane { background: lightsteelblue; }
+#ProfilePane .Title { font-family: Verdana, Sans-Serif; font-size: 2em; font-weight: bold; }
+#ProfilePane .UserOfflineMessage, #ProfilePane .UserOnlineMessage { font-size: 1.1em; }
+.UserOnlineMessage { color: #0a8a0a; font-weight: bold; }
+.UserOfflineMessage { color: #777; }
+.ProfileAvatar { float: left; width: 252px; text-align: center; margin-right: 8px; }
+.ProfileAvatar img, #Avatar3DHolder { background: #fff; border: 1px solid #555; }
+.ProfileAvatar .AvatarLinks a, .AvatarLinks a { font-size: 10px; margin: 0 2px; }
+.ProfileBlurb { overflow: hidden; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.ProfileBlurb p { margin-top: 0 !important; }
+.ProfileActions { margin-top: 8px; text-align: center; }
+#UserBadges h4, #UserStatistics h4, #FriendsPane h4, .SidePane h4 { font-family: Comic Sans MS, Verdana, Sans-Serif; font-size: 1.2em; line-height: 1.6em; }
+#UserBadges .Badge { display: inline-block; vertical-align: top; width: 90px; }
+#UserBadges .BadgeImage img { object-fit: contain; }
+#UserBadges .BadgeLabel { font-size: 10px; font-family: Verdana, Sans-Serif; }
+#FriendsPane { background: #fff; }
+#FriendsPane h4 { background-color: #ccc; border-bottom: solid 1px #000; color: #333; margin: 0; text-align: center; }
+#FriendsPane h4 a { color: #333; }
+#Friends td.Friend { width: 130px; font-size: 11px; font-family: Verdana, Sans-Serif; }
+#Friends img { border: 1px solid #ccc; }
+.SidePane { border: solid 1px #000; margin-top: 10px; background: #fff; }
+.SidePane h4 { background-color: #ccc; border-bottom: solid 1px #000; color: #333; margin: 0; text-align: center; }
+.SidePaneContent { padding: 8px; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.MiniAsset { float: left; width: 102px; height: 128px; margin: 2px; text-align: center; overflow: hidden; font-size: 10px; font-family: Verdana, Sans-Serif; }
+.MiniAsset img { border: 1px solid #000; background: #fff; }
+#WearingPanel .MiniAsset { height: 150px; }
+
+/* People */
+#BrowseContainer .SearchBar, #CatalogContainer .SearchBar { background-color: #eee; border: solid 1px #bbb; padding: 5px; margin: 0 0 8px 0; height: auto; text-align: left; }
+.BrowseTable th { background: #6e99c9; color: #fff; font-family: Verdana, Sans-Serif; font-size: 11px; padding: 4px; background-image: none; }
+.BrowseTable td { font-family: Verdana, Sans-Serif; font-size: 11px; border-bottom: 1px solid #ddd; }
+.BrowseTable .AlternatingItem td { background: #eef3fa; }
+.BrowseTable .UserName { font-weight: bold; font-size: 12px; }
+.BrowseTable .Blurb { color: #555; }
+
+/* Catalog */
+#CatalogContainer h4 { margin: 0; font-size: 1.3em; letter-spacing: .05em; line-height: 1.6em; }
+#CatalogCategories { float: left; width: 170px; }
+#CatalogCategories ul { margin: 0; padding: 6px 0; }
+#CatalogCategories li { padding: 3px 12px; margin: 0; }
+#CatalogCategories li.Selected { background: #6e99c9; }
+#CatalogCategories li.Selected a { color: #fff; font-weight: bold; }
+#CatalogCategories .CategoryFooter { border-top: 1px solid #bbb; padding: 6px 12px; font-size: 11px; font-family: Verdana, Sans-Serif; }
+#CatalogItems { float: right; width: 718px; }
+#CatalogContainer .Assets { float: none; width: auto; }
+#CatalogContainer .SearchBar .TextBox { width: 220px; height: auto; margin: 0; padding: 3px; }
+#CatalogContainer .SortBy { float: right; padding-top: 4px; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.Assets .Asset, #CatalogContainer .Asset { float: left; width: 130px; margin: 0 6px 12px 0; vertical-align: top; }
+.Asset .AssetThumbnail, #CatalogContainer .Asset .AssetThumbnail { border: solid 1px #000; width: auto; height: auto; text-align: center; background: #fff; padding: 4px 0; }
+.Asset .AssetDetails, #CatalogContainer .Asset .AssetDetails { width: auto; padding: 2px 0 4px 0; font-family: Verdana, Sans-Serif; font-size: 10px; overflow: hidden; }
+.Asset .AssetName a { font-weight: bold; font-size: 11px; }
+.Asset .AssetAction { margin-top: 3px; }
+.AssetOwned { color: #2a7a2a; font-weight: bold; font-size: 10px; font-family: Verdana, Sans-Serif; }
+#ItemContainer { width: 640px; margin: 0 auto; }
+#ItemThumbnail { float: left; border: 1px solid #000; margin-right: 15px; }
+#ItemDetails { overflow: hidden; font-family: Verdana, Sans-Serif; font-size: 12px; }
+#ItemDescription { margin: 10px 0; padding: 8px; background: #eee; border: 1px solid #bbb; }
+#ItemActions { margin-top: 10px; }
+.Free { color: #2a7a2a; font-weight: bold; }
+
+/* My BOBLOX */
+#MyHomeLeft { float: left; width: 300px; }
+#MyHomeLeft img { border: 1px solid #ccc; }
+#MyHomeRight { float: right; width: 585px; }
+.RequestTable td { border-bottom: 1px solid #ddd; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.RequestAnswered { color: #2a7a2a; font-weight: bold; text-align: center; }
+
+/* Character page */
+#CharacterLeft { float: left; width: 330px; }
+#CharacterRight { float: right; width: 560px; }
+#AvatarPanel .PanelContent { text-align: center; }
+#AvatarViewer { width: 300px; height: 360px; margin: 0 auto; background: #fff; border: 1px solid #999; }
+#AvatarViewer canvas { display: block; }
+#AvatarStatus { margin-top: 5px; min-height: 14px; }
+.Avatar3DUnsupported { padding: 40px 10px; color: #777; font-family: Verdana, Sans-Serif; font-size: 11px; }
+#BodyColorFigure { position: relative; width: 194px; height: 220px; margin: 6px auto; }
+.BodyPart { position: absolute; border: 1px solid #333; cursor: pointer; }
+.BodyPart:hover { border-color: #000; box-shadow: 0 0 0 2px #6e99c9; }
+.BodyPart.Selected { box-shadow: 0 0 0 3px #ff9900; }
+.BodyPart.Head { left: 75px; top: 0; width: 42px; height: 42px; border-radius: 9px; }
+.BodyPart.Torso { left: 51px; top: 46px; width: 90px; height: 88px; }
+.BodyPart.RightArm { left: 6px; top: 46px; width: 42px; height: 88px; }
+.BodyPart.LeftArm { left: 144px; top: 46px; width: 42px; height: 88px; }
+.BodyPart.RightLeg { left: 51px; top: 137px; width: 43px; height: 80px; }
+.BodyPart.LeftLeg { left: 97px; top: 137px; width: 44px; height: 80px; }
+#ColorPicker { border: 1px solid #000; background: #f4f4f4; padding: 6px; margin-top: 6px; }
+.ColorPickerTitle { font-weight: bold; margin-bottom: 5px; }
+#ColorSwatches { width: 272px; margin: 0 auto; }
+.ColorSwatch { float: left; width: 30px; height: 30px; margin: 1px; border: 1px solid #333; }
+.ColorSwatch:hover { border: 1px solid #fff; outline: 2px solid #000; }
+.ColorPickerFooter { clear: both; padding-top: 6px; text-align: center; }
+#WardrobeContent { min-height: 300px; transition: opacity .15s; }
+#WardrobeContent .Asset { width: 122px; margin-right: 8px; }
+.EmptyWardrobe { text-align: center; padding: 40px 0; font-size: 12px; }
+
+/* Header text over the banner picture */
+#Banner #Authentication, #Banner #Options #Settings { background: rgba(0, 0, 0, .55); border-radius: 0 0 4px 0; }
+#Banner #Options #Settings { border-radius: 0 4px 0 0; }
+
+/* Forum thread look on the home page (from the original index.html) */
+a.linkMenuSink { font-weight: bold; color: navy; font-size: 10px; font-family: Verdana, Arial, Helvetica, sans-serif; }
+a.linkMenuSink:visited { color: #013DA4; }
+a.linkMenuSink:hover { color: #DD6900; }
+.tableBorder { border: 1px #013DA4 solid; background-color: #FFFFFF; }
+th.tableHeaderText { background-color: #4455aa; color: white; font: bold 8pt/normal Verdana, sans-serif; }
+td.forumRow { background-color: #DDEEFF; }
+td.forumRowHighlight { background-color: #D4D9EC; }
+.normalTextSmall { font-size: 11px; }
+.normalTextSmallBold { font-size: 11px; font-weight: bold; }
+.normalTextSmaller { font-size: 10px; }
+.normalTextSmall, .normalTextSmallBold, .normalTextSmaller { font-family: Verdana, Arial, Helvetica, sans-serif; }
+td.forumRow img { border: 0; }
+#NewestMembers { width: 525px; }
+#SiteStats { width: 300px; }
+.BulletRow { overflow: hidden; clear: both; }

@@ -1,0 +1,32 @@
+# BOBLOX - Apache settings (shared hosting / public_html)
+DirectoryIndex Default.php index.php
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # If the site lives in a sub folder, change this to e.g. /boblox/
+  RewriteBase /
+
+  # Never serve server code or data directly
+  RewriteRule ^(App_Code|App_Data)(/|$) - [F,L]
+
+  # ASP.NET-style web services: /WebServices/Character.asmx/WearItem
+  RewriteRule ^(.+)\.asmx/(\w+)$ $1.php?method=$2 [QSA,L]
+
+  # ASP.NET-style pages and handlers: /User.aspx -> /User.php, /Thumbs/Avatar.ashx -> /Thumbs/Avatar.php
+  RewriteRule ^(.+)\.(aspx|ashx)$ $1.php [QSA,L]
+
+  # Old profile links: /users/1/profile
+  RewriteRule ^users/(\d+)/profile/?$ User.php?ID=$1 [QSA,L]
+
+  # Vanity profile links: /marcel
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^([A-Za-z0-9_]{3,20})/?$ User.php?name=$1 [QSA,L]
+</IfModule>
+
+# Uploads larger than this are refused before PHP sees them
+<IfModule mod_php.c>
+  php_value upload_max_filesize 4M
+  php_value post_max_size 8M
+</IfModule>
