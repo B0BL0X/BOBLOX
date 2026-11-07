@@ -29,6 +29,7 @@ BOBLOX.Character = {
       $get('AvatarStatus').innerHTML = 'Your browser cannot show 3D, so you see a simple picture instead.';
     }
     this.buildSwatches();
+    this.buildPosePanel();
     this.applyState(BOBLOX.CharacterStartState, false);
     this.showWardrobe(BOBLOX.CharacterStartType || 8, 1);
 
@@ -62,6 +63,8 @@ BOBLOX.Character = {
     this.state = state;
     if (this.viewer.supported) {
       this.viewer.setAppearance(state.appearance);
+      // keep an unsaved custom pose on screen while other things change
+      if (this.poseDirty) this.viewer.setPose(this.readSliders());
     } else {
       $get('AvatarFallback').src = state.thumbUrl.replace(/x=\d+/, 'x=250');
     }
@@ -72,6 +75,7 @@ BOBLOX.Character = {
       $get('Body_' + part).title = this.partLabels[part] + ': ' + BOBLOX.BrickColors[colors[part]].name;
     }
     this.renderWearing();
+    if (!this.poseDirty) this.showPose(state.appearance.pose);
     if (changed) {
       if (this.viewer.supported) this.scheduleThumbnail(600);
       else this.setStatus('Saved!');
@@ -137,6 +141,112 @@ BOBLOX.Character = {
     this.call('SetAllBodyColors', { colorId: color });
   },
 
+  // ---- poses ----
+  jointLabels: { Head: 'Head', RightArm: 'Right Arm', LeftArm: 'Left Arm', RightLeg: 'Right Leg', LeftLeg: 'Left Leg' },
+  axisLabels: { yaw: 'Turn', pitch: 'Nod', roll: 'Tilt', swing: 'Swing', raise: 'Raise' },
+
+  buildPosePanel: function () {
+    var root = (BOBLOX.Config && BOBLOX.Config.root) || '/';
+    var html = '', presets = BOBLOX.Poses.presets, i;
+    for (i = 0; i < presets.length; i++) {
+      html += '<a href="#" class="PosePreset" id="Pose_' + presets[i].name + '" title="' + presets[i].label + '" ' +
+        'onclick="BOBLOX.Character.choosePose(\'' + presets[i].name + '\'); return false;">' +
+        '<img src="' + root + 'img/Poses/' + presets[i].name + '.png" alt="" />' + presets[i].label + '</a>';
+    }
+    $get('PosePresets').innerHTML = html;
+
+    var limits = BOBLOX.Poses.limits, sliders = '';
+    for (var joint in this.jointLabels) {
+      if (!this.jointLabels.hasOwnProperty(joint)) continue;
+      sliders += '<div class="PoseJoint"><b>' + this.jointLabels[joint] + '</b>';
+      for (var axis in limits[joint]) {
+        if (!limits[joint].hasOwnProperty(axis)) continue;
+        var id = 'Pose_' + joint + '_' + axis;
+        sliders += '<div class="PoseSlider"><label for="' + id + '">' + this.axisLabels[axis] + '</label>' +
+          '<input type="range" id="' + id + '" min="' + limits[joint][axis][0] + '" max="' + limits[joint][axis][1] + '" step="1" value="0" ' +
+          'oninput="BOBLOX.Character.previewCustomPose()" onchange="BOBLOX.Character.previewCustomPose()" />' +
+          '<span id="' + id + '_Value">0&deg;</span></div>';
+      }
+      sliders += '</div>';
+    }
+    $get('PoseSliders').innerHTML = sliders;
+  },
+
+  readSliders: function () {
+    var limits = BOBLOX.Poses.limits, joints = {};
+    for (var joint in limits) {
+      if (!limits.hasOwnProperty(joint)) continue;
+      joints[joint] = {};
+      for (var axis in limits[joint]) {
+        if (limits[joint].hasOwnProperty(axis)) joints[joint][axis] = parseFloat($get('Pose_' + joint + '_' + axis).value) || 0;
+      }
+    }
+    return joints;
+  },
+
+  writeSliders: function (joints) {
+    var limits = BOBLOX.Poses.limits;
+    for (var joint in limits) {
+      if (!limits.hasOwnProperty(joint)) continue;
+      for (var axis in limits[joint]) {
+        if (!limits[joint].hasOwnProperty(axis)) continue;
+        var v = joints[joint] && joints[joint][axis] ? Math.round(joints[joint][axis]) : 0;
+        $get('Pose_' + joint + '_' + axis).value = v;
+        $get('Pose_' + joint + '_' + axis + '_Value').innerHTML = v + '&deg;';
+      }
+    }
+  },
+
+  // Highlights the saved pose and loads its angles into the sliders.
+  showPose: function (pose) {
+    if (!pose) return;
+    var presets = BOBLOX.Poses.presets;
+    for (var i = 0; i < presets.length; i++) {
+      var el = $get('Pose_' + presets[i].name);
+      el.className = 'PosePreset' + (presets[i].name === pose.name ? ' Selected' : '');
+    }
+    this.writeSliders(pose.joints);
+    this.poseDirty = false;
+    $get('PoseName').innerHTML = 'Current pose: ' + pose.label;
+  },
+
+  choosePose: function (name) {
+    var self = this;
+    this.poseDirty = false;
+    this.call('SetPose', { name: name }, function () { self.showPose(self.state.appearance.pose); });
+  },
+
+  previewCustomPose: function () {
+    var joints = this.readSliders();
+    this.writeSliders(joints);
+    this.poseDirty = true;
+    $get('PoseName').innerHTML = 'Custom pose (not saved yet)';
+    var presets = BOBLOX.Poses.presets;
+    for (var i = 0; i < presets.length; i++) $get('Pose_' + presets[i].name).className = 'PosePreset';
+    if (this.viewer.supported) this.viewer.setPose(joints);
+  },
+
+  saveCustomPose: function () {
+    var self = this;
+    this.poseDirty = false;
+    this.call('SetPose', { name: 'custom', joints: this.readSliders() }, function () { self.showPose(self.state.appearance.pose); });
+  },
+
+  resetPose: function () {
+    var pose = this.state.appearance.pose;
+    this.showPose(pose);
+    if (this.viewer.supported) {
+      this.viewer.setPose(pose.joints);
+      if (!this.state.thumbRendered) this.scheduleThumbnail(300);
+    }
+  },
+
+  toggleCustomPose: function () {
+    var ed = $get('CustomPoseEditor'), open = ed.style.display === 'none';
+    ed.style.display = open ? 'block' : 'none';
+    $get('CustomPoseToggle').innerHTML = open ? '[-] Hide the custom pose editor' : '[+] Make a custom pose';
+  },
+
   // ---- wardrobe ----
   showWardrobe: function (type, page) {
     var self = this;
@@ -184,6 +294,11 @@ BOBLOX.Character = {
   uploadThumbnail: function () {
     var self = this;
     if (this.busy > 0) { this.scheduleThumbnail(300); return; }
+    if (this.poseDirty) {
+      // the profile picture is made once the custom pose is saved or undone
+      this.setStatus('Saved! Remember to save your custom pose.');
+      return;
+    }
     var version = ++this.thumbVersion;
     this.viewer.snapshot(420, function (png) {
       if (version !== self.thumbVersion) return;   // something changed again meanwhile

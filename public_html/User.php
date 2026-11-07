@@ -18,6 +18,13 @@ if (!$user) {
     exit;
 }
 
+if ((int)$user['banned'] === 1 && !is_admin()) {
+    page_header($user['username']);
+    echo '<div class="FormPage"><div class="Panel"><h4>' . h($user['username']) . '</h4><div class="PanelContent"><p>This account has been banned.</p></div></div></div>';
+    page_footer();
+    exit;
+}
+
 // Count one view per visitor session (and not your own).
 $viewed = isset($_SESSION['viewed']) ? $_SESSION['viewed'] : array();
 if ((int)$user['id'] !== current_user_id() && !isset($viewed[$user['id']])) {
@@ -106,7 +113,7 @@ window.ProfileAppearance = <?php echo json_encode(avatar_appearance($user), JSON
 <?php foreach ($badges as $b) { ?>
         <div class="Badge">
           <div class="BadgeImage">
-            <img src="<?php echo h(url('/' . $b[1])); ?>" width="75" height="75" title="<?php echo h($b[2]); ?>" alt="<?php echo h($b[0]); ?>" /><br />
+            <img src="<?php echo h($b[1]); ?>" width="75" height="75" title="<?php echo h($b[2]); ?>" alt="<?php echo h($b[0]); ?>" /><br />
             <div class="BadgeLabel"><?php echo h($b[0]); ?></div>
           </div>
         </div>

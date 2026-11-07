@@ -9,7 +9,7 @@ define('ITEM_SHIRT', 11);
 define('ITEM_PANTS', 12);
 define('ITEM_FACE', 18);
 
-define('SCHEMA_VERSION', 1);
+define('SCHEMA_VERSION', 3);
 
 function db()
 {
@@ -66,6 +66,48 @@ function db_migrate(PDO $pdo)
     if ($version >= SCHEMA_VERSION) return;
 
     $pdo->beginTransaction();
+    if ($version < 1) {
+        db_create_tables($pdo);
+        db_seed($pdo);
+    }
+    if ($version < 2) {
+        // v2: saved character pose (JSON, see js/Poses.js)
+        $pdo->exec("ALTER TABLE users ADD COLUMN pose TEXT NOT NULL DEFAULT ''");
+    }
+    if ($version < 3) {
+        // v3: admin panel (bans, site settings, custom badges, admin log)
+        $pdo->exec("
+            ALTER TABLE users ADD COLUMN banned INTEGER NOT NULL DEFAULT 0;
+            ALTER TABLE users ADD COLUMN ban_reason TEXT NOT NULL DEFAULT '';
+            CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS badges (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                description TEXT NOT NULL DEFAULT '',
+                file TEXT NOT NULL,
+                created INTEGER NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS user_badges (
+                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                badge_id INTEGER NOT NULL REFERENCES badges(id) ON DELETE CASCADE,
+                awarded_by INTEGER NOT NULL DEFAULT 0,
+                created INTEGER NOT NULL,
+                PRIMARY KEY (user_id, badge_id)
+            );
+            CREATE TABLE IF NOT EXISTS admin_log (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                admin_id INTEGER NOT NULL,
+                action TEXT NOT NULL,
+                created INTEGER NOT NULL
+            );
+        ");
+    }
+    $pdo->prepare("INSERT OR REPLACE INTO meta (key, value) VALUES ('schema', ?)")->execute(array(SCHEMA_VERSION));
+    $pdo->commit();
+}
+
+function db_create_tables(PDO $pdo)
+{
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -122,9 +164,6 @@ function db_migrate(PDO $pdo)
         );
         CREATE INDEX IF NOT EXISTS friends_target ON friends(target_id, accepted);
     ");
-    db_seed($pdo);
-    $pdo->prepare("INSERT OR REPLACE INTO meta (key, value) VALUES ('schema', ?)")->execute(array(SCHEMA_VERSION));
-    $pdo->commit();
 }
 
 /** Built-in catalog: hats, faces and a few starter clothes (all made by "BOBLOX"). */

@@ -59,6 +59,12 @@ ws_run(array(
         }
         return character_state($user);
     }),
+    'SetPose' => array('handler' => function ($p) {
+        $user = ws_user();
+        $err = set_pose($user, ws_string($p, 'name'), isset($p['joints']) ? $p['joints'] : null);
+        if ($err) ws_fail($err);
+        return character_state($user);
+    }),
     'WearItem' => array('handler' => function ($p) {
         $user = ws_user();
         $item = get_item(ws_int($p, 'itemId'));

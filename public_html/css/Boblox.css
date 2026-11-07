@@ -23,7 +23,7 @@ a.Button:hover { color: #fff; }
 .Button.Busy { opacity: .6; cursor: wait; }
 input.Button { padding: 3px 10px; }
 .TextBox { border: solid 1px #777; padding: 3px; font-size: 12px; }
-textarea { font-size: 12px; padding: 3px; border: solid 1px #777; }
+textarea { font-family: Verdana, Sans-Serif; font-size: 12px; padding: 3px; border: solid 1px #777; }
 .AdminPanel { margin-top: 10px; }
 .AdminTag { background: #000; color: #fff; font-size: 9px; padding: 0 3px; }
 .BulletList { margin: 8px 0 0 18px; padding: 0; line-height: 1.8em; }
@@ -169,3 +169,68 @@ td.forumRow img { border: 0; }
 #NewestMembers { width: 525px; }
 #SiteStats { width: 300px; }
 .BulletRow { overflow: hidden; clear: both; }
+
+/* Poses */
+#PosePresets { margin: 0 -2px; }
+.PosePreset { float: left; width: 72px; margin: 2px; padding: 2px 0 3px 0; border: 1px solid #999; background: #fff; text-align: center; font-family: Verdana, Sans-Serif; font-size: 10px; color: #333 !important; text-decoration: none !important; }
+.PosePreset img { display: block; margin: 0 auto; width: 64px; height: 64px; }
+.PosePreset:hover { border-color: #000; background: #e8f0fa; }
+.PosePreset.Selected { border: 2px solid #ff9900; margin: 1px; background: #fff8e8; font-weight: bold; }
+#CustomPose { border-top: 1px solid #bbb; margin-top: 8px; padding-top: 6px; }
+.CustomPoseTitle { font-weight: bold; }
+.CustomPoseTitle #PoseName { font-weight: normal; margin-left: 8px; }
+.PoseJoint { float: left; width: 242px; margin: 4px 6px 4px 0; border: 1px solid #ccc; background: #f6f6f6; padding: 4px 6px; }
+.PoseJoint b { display: block; margin-bottom: 2px; }
+.PoseSlider { line-height: 22px; }
+.PoseSlider label { display: inline-block; width: 46px; }
+.PoseSlider input { width: 140px; vertical-align: middle; }
+.PoseSlider span { display: inline-block; width: 36px; text-align: right; color: #555; }
+.CustomPoseButtons { clear: both; padding-top: 6px; }
+
+/* Admin panel */
+#AdminContainer .AdminTabs { margin-bottom: 8px; }
+.AdminSubLinks { margin: 0 0 8px 4px; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.AdminSearch { background: #eee; border: 1px solid #bbb; padding: 5px; margin-bottom: 8px; }
+.AdminSearch .TextBox { width: 200px; }
+.AdminTable th { background: #6e99c9; color: #fff; font-family: Verdana, Sans-Serif; font-size: 11px; padding: 4px; background-image: none; }
+.AdminTable td { font-family: Verdana, Sans-Serif; font-size: 11px; border-bottom: 1px solid #ddd; vertical-align: middle; }
+.AdminTable img { border: 1px solid #ccc; background: #fff; }
+.AdminActions { white-space: nowrap; }
+.AdminActions .Button { padding: 2px 6px; font-size: 10px; }
+a.Button.DangerButton:link, a.Button.DangerButton:visited { color: #b00; border-color: #b00; }
+a.Button.DangerButton:hover { background: #c4291c; color: #fff; border-color: #000; }
+.BannedRow td { background: #fde8e8; }
+.BannedTag { background: #c4291c; color: #fff; font-size: 9px; padding: 0 3px; margin-left: 3px; }
+.AdminTag { margin-left: 3px; }
+.OwnerTag { background: #e2b13c; color: #000; }
+.AdminNotice { border: 2px solid #4c984b; background: #eef8ee; padding: 6px 10px; margin-bottom: 8px; font-family: Verdana, Sans-Serif; font-size: 12px; font-weight: bold; color: #2a7a2a; }
+.AdminWarning { border: 2px solid #ff9900; background: #fff4e0; padding: 6px 10px; margin-bottom: 8px; font-family: Verdana, Sans-Serif; font-size: 12px; }
+.AdminStats { margin-bottom: 10px; }
+.AdminStat { float: left; width: 140px; margin-right: 8px; border: 1px solid #000; background: #fff; text-align: center; padding: 8px 0; }
+.AdminStatValue { font-size: 24px; font-weight: bold; font-family: Verdana, Sans-Serif; color: #013DA4; }
+.AdminStatLabel { font-family: Verdana, Sans-Serif; font-size: 11px; color: #555; }
+.AdminColumnLeft { float: left; width: 575px; }
+.AdminColumnRight { float: right; width: 310px; }
+.AdminColumnLeft .Asset { width: 126px; }
+.AdminItemPreview { float: left; width: 260px; margin-right: 15px; text-align: center; }
+.AdminItemPreview img, #HatPreview { border: 1px solid #000; background: #fff; width: 250px; height: 250px; margin: 0 auto; }
+.AutoBadge { float: left; width: 160px; min-height: 118px; margin: 0 8px 8px 0; padding: 6px; border: 1px solid #ccc; background: #f8f8f8; text-align: center; cursor: pointer; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.AutoBadge img { object-fit: contain; }
+.CustomBadge { border-bottom: 1px solid #ddd; padding: 8px 0; }
+.CustomBadgeImage { float: left; margin-right: 12px; border: 1px solid #ccc; background: #fff; object-fit: contain; }
+.CustomBadgeInfo { overflow: hidden; font-family: Verdana, Sans-Serif; font-size: 11px; }
+.BadgeAward { margin: 6px 0; }
+.BadgeAward .TextBox { width: 140px; }
+.BadgeHolder { display: inline-block; background: #e8f0fa; border: 1px solid #b5c8e0; padding: 1px 5px; margin: 2px 4px 2px 0; }
+.BigToggle { display: inline-block; font-size: 14px; font-weight: bold; padding: 6px 10px; border: 2px solid #999; background: #f4f4f4; cursor: pointer; }
+.BigToggle.On { border-color: #c4291c; background: #fde8e8; color: #c4291c; }
+input.SaveAllButton { font-size: 13px; padding: 5px 20px; }
+
+/* Site alert & maintenance */
+.SystemAlert { margin: 8px 0 0 0; background-color: #fff3c4; border: 2px solid #000; }
+.SystemAlert .SystemAlertText { color: #000; font-size: 13px; }
+.SystemAlert .Exclamation { margin: 2px 6px 0 6px; }
+.SystemAlert.MaintenanceOn { background: #c4291c; }
+.SystemAlert.MaintenanceOn .SystemAlertText, .SystemAlert.MaintenanceOn a { color: #fff; }
+.MaintenanceNotice { margin: 0 0 10px 0; background: #ff9900; }
+.MaintenanceBody { font-size: 13px !important; line-height: 1.6em; }

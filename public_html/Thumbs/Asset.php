@@ -11,8 +11,12 @@ if (!$item) {
 $size = get_int('x', 110);
 $type = (int)$item['type'];
 
+if ($type === ITEM_HAT && is_file(thumbs_dir() . '/asset_' . (int)$item['id'] . '.png')) {
+    // rendered in the admin panel when the hat was made or edited
+    send_png(thumb_scaled(thumbs_dir() . '/asset_' . (int)$item['id'] . '.png', $size), 3600);
+}
 if ($type === ITEM_HAT) {
-    // pre-rendered hat pictures (tools/render-hats.js)
+    // pre-rendered hat pictures (tools/render-hats.cjs)
     $mesh = preg_replace('/[^a-z]/', '', (string)$item['mesh']);
     $color = strtolower(preg_replace('/[^0-9a-fA-F]/', '', (string)$item['color']));
     $p = __DIR__ . '/../img/Hats/' . $mesh . '_' . $color . '.png';

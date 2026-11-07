@@ -34,7 +34,7 @@ page_header('Login');
         <tr><td class="Label"><label for="Password">Password:</label></td><td><input id="Password" name="Password" type="password" class="TextBox" maxlength="200" /></td></tr>
         <tr><td></td><td><input type="submit" class="Button" value="Login" /></td></tr>
       </table>
-<?php if (REGISTRATION_OPEN) { ?>
+<?php if (registration_open()) { ?>
       <p>Not a member? <a href="<?php echo h(url('/Login/NewAccount.aspx')); ?>">Sign up for free!</a></p>
 <?php } ?>
     </form>

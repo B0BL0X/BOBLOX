@@ -10,6 +10,7 @@ function page_header($title, $options = array())
     $scripts = isset($options['scripts']) ? $options['scripts'] : array();
     $three = !empty($options['three']);
     $requests = $user ? friend_request_count($user['id']) : 0;
+    $signupOpen = registration_open() && !maintenance_on();
     $config = array(
         'root' => BASE_PATH,
         'friendlyUrls' => FRIENDLY_URLS,
@@ -60,7 +61,7 @@ function page_header($title, $options = array())
                     <a href="#" onclick="BOBLOX.logout(); return false;">Logout</a>
 <?php } else { ?>
                     <a href="<?php echo h(url('/Login/Default.aspx')); ?>">Login</a>
-<?php     if (REGISTRATION_OPEN) { ?>
+<?php     if ($signupOpen) { ?>
                     <span>&nbsp;|&nbsp;</span>
                     <a href="<?php echo h(url('/Login/NewAccount.aspx')); ?>">Sign Up</a>
 <?php     } ?>
@@ -79,7 +80,7 @@ function page_header($title, $options = array())
                             <div id="AlertSpace">
                                 <div id="MessageAlert"><a href="<?php echo h(url('/My/Home.aspx')); ?>"><?php echo (int)$requests; ?> Friend Request<?php echo $requests === 1 ? '' : 's'; ?></a></div>
                             </div>
-<?php } elseif (!$user && REGISTRATION_OPEN) { ?>
+<?php } elseif (!$user && $signupOpen) { ?>
                             <div id="AlertSpace" class="SignUpAndPlay"><a href="<?php echo h(url('/Login/NewAccount.aspx')); ?>" style="color:#6e99c9">Make your character!</a></div>
 <?php } ?>
                         </td>
@@ -103,8 +104,18 @@ function page_header($title, $options = array())
             <span class="Separator">&nbsp;|&nbsp;</span>
             <span><a id="ctl00_hlCreate" class="MenuItem" href="<?php echo h(url('/My/Create.aspx')); ?>">Create</a></span>
 <?php } ?>
+<?php if ($user && (int)$user['is_admin'] === 1) { ?>
+            <span class="Separator">&nbsp;|&nbsp;</span>
+            <span><a id="ctl00_hlAdmin" class="MenuItem" href="<?php echo h(url('/Admin/Default.aspx')); ?>">Admin</a></span>
+<?php } ?>
         </div>
     </div>
+<?php if ($user && (int)$user['is_admin'] === 1 && maintenance_on() && empty($options['maintenance'])) { ?>
+    <div class="SystemAlert MaintenanceOn"><div class="SystemAlertText">Maintenance mode is ON: only admins can use the site. <a href="<?php echo h(url('/Admin/Site.aspx')); ?>">Turn it off</a></div></div>
+<?php } ?>
+<?php if (trim(setting('alert_text')) !== '' && empty($options['maintenance'])) { ?>
+    <div class="SystemAlert"><div class="SystemAlertText"><div class="Exclamation"></div><?php echo h(setting('alert_text')); ?></div></div>
+<?php } ?>
     <div id="Body">
 <?php
 }
@@ -165,27 +176,4 @@ function item_tile($item, $actions = '', $size = 110)
     $out .= $actions;
     $out .= '</div></div>';
     return $out;
-}
-
-/** Badges a user has earned. */
-function user_badges($user)
-{
-    $badges = array();
-    if ((int)$user['is_admin'] === 1) {
-        $badges[] = array('Administrator', 'img/bobloxadmin.png', 'This badge is given to administrators on the site.');
-    }
-    $created = (int)db_value('SELECT COUNT(*) FROM items WHERE creator_id = ? AND deleted = 0', array((int)$user['id']));
-    if ($created >= 1) {
-        $badges[] = array('Homestead', 'img/Homestead.webp', 'This badge is given to people who have made an item for the catalog.');
-    }
-    if ($created >= 5) {
-        $badges[] = array('Bricksmith', 'img/Supermod-0.webp', 'This badge is given to people who have made 5 or more catalog items.');
-    }
-    if (friend_count($user['id']) >= 5) {
-        $badges[] = array('Friendship', 'img/Ambassador-256x256.webp', 'This badge is given to people who have 5 or more friends.');
-    }
-    if (time() - (int)$user['created'] >= 365 * 86400) {
-        $badges[] = array('Veteran', 'img/Badge_combat.webp', 'This badge is given to people who have been members for a year or more.');
-    }
-    return $badges;
 }

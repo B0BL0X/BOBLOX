@@ -15,10 +15,10 @@ if ($owner) {
     $users = friends_of($owner['id'], $perPage, ($page - 1) * $perPage);
     $title = $owner['username'] . "'s Friends";
 } else {
-    $where = '';
+    $where = 'WHERE banned = 0';
     $params = array();
     if ($q !== '') {
-        $where = "WHERE username LIKE ? ESCAPE '\\'";
+        $where = "WHERE banned = 0 AND username LIKE ? ESCAPE '\\'";
         $params[] = '%' . addcslashes($q, '%_\\') . '%';
     }
     $total = (int)db_value("SELECT COUNT(*) FROM users $where", $params);

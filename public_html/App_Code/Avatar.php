@@ -47,6 +47,7 @@ function avatar_appearance($user)
         'shirt' => null,
         'pants' => null,
         'hat' => null,
+        'pose' => pose_of_user($user),
     );
     if (isset($wearing[ITEM_FACE])) {
         $f = $wearing[ITEM_FACE];

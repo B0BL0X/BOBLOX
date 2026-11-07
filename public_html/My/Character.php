@@ -15,11 +15,12 @@ page_header('Character', array('three' => true, 'scripts' => array('/js/Characte
 //<![CDATA[
 BOBLOX.CharacterStartState = <?php echo json_encode(character_state($me), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 BOBLOX.CharacterStartType = <?php echo (int)$startType; ?>;
+BOBLOX.Poses = <?php echo json_encode(pose_client_data(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 //]]>
 </script>
 <div id="CharacterContainer">
 <?php if (get_int('welcome')) { ?>
-  <div class="WelcomeNote">Welcome to <?php echo h(SITE_NAME); ?>, <?php echo h($me['username']); ?>! Click a body part to change its colour, then pick a hat and some clothes from your wardrobe. Everything saves by itself.</div>
+  <div class="WelcomeNote"><?php echo multiline(str_replace('{name}', $me['username'], setting('welcome_note'))); ?></div>
 <?php } ?>
   <div id="CharacterLeft">
     <div class="Panel" id="AvatarPanel">
@@ -64,6 +65,29 @@ BOBLOX.CharacterStartType = <?php echo (int)$startType; ?>;
         <div class="PanelFooter">
           <a href="<?php echo h(url('/Catalog.aspx')); ?>" id="WardrobeCatalogLink">Get more from the catalog</a> |
           <a href="<?php echo h(url('/My/Create.aspx')); ?>">Make your own</a>
+        </div>
+      </div>
+    </div>
+    <div class="Panel" id="PosePanel">
+      <h4>Pose</h4>
+      <div class="PanelContent">
+        <div id="PosePresets"></div>
+        <div style="clear:both"></div>
+        <div id="CustomPose">
+          <div class="CustomPoseTitle">
+            <a href="#" onclick="BOBLOX.Character.toggleCustomPose(); return false;" id="CustomPoseToggle">[+] Make a custom pose</a>
+            <span id="PoseName" class="Faded"></span>
+          </div>
+          <div id="CustomPoseEditor" style="display:none">
+            <p class="Hint">Move the sliders to bend the head, arms and legs. The figure shows the pose straight away; press Save Pose to keep it.</p>
+            <div id="PoseSliders"></div>
+            <div style="clear:both"></div>
+            <div class="CustomPoseButtons">
+              <a href="#" class="Button" onclick="BOBLOX.Character.saveCustomPose(); return false;">Save Pose</a>
+              <a href="#" class="Button" onclick="BOBLOX.Character.resetPose(); return false;">Undo Changes</a>
+              <a href="#" class="Button" onclick="BOBLOX.Character.choosePose('stand'); return false;">Stand Up Straight</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
