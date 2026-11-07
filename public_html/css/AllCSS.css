@@ -816,7 +816,7 @@ a.BannerText:hover
 
 #BadgesContainer #CommunityBadges .Legend #Administrator
 {
-  background-image: url(../img/Badges/Administrator-75x75.png);
+  background-image: url(../img/bobloxadmin.png);
 }
 
 #BadgesContainer #CommunityBadges .Legend #ForumModerator
@@ -831,7 +831,7 @@ a.BannerText:hover
 
 #BadgesContainer #FriendshipBadges .Legend #Friendship
 {
-  background-image: url(../img/Badges/Friendship-75x75.jpg);
+  background-image: url(../img/Ambassador-256x256.webp);
 }
 
 #BadgesContainer #FriendshipBadges .Legend #Inviter
@@ -841,7 +841,7 @@ a.BannerText:hover
 
 #BadgesContainer #CombatBadges .Legend #CombatInitiation
 {
-  background-image: url(../img/Badges/CombatInitiation-75x75.jpg);
+  background-image: url(../img/Badge_combat.webp);
 }
 
 #BadgesContainer #CombatBadges .Legend #Warrior
@@ -856,12 +856,12 @@ a.BannerText:hover
 
 #BadgesContainer #VisitsBadges .Legend #Homestead
 {
-  background-image: url(../img/Badges/Homestead-70x75.jpg);
+  background-image: url(../img/Homestead.webp);
 }
 
 #BadgesContainer #VisitsBadges .Legend #Bricksmith
 {
-  background-image: url(../img/Badges/Bricksmith-54x75.jpg);
+  background-image: url(../img/Supermod-0.webp);
 }
 
 #BadgesContainer .AccordionHeader,
