@@ -9,7 +9,7 @@ define('ITEM_SHIRT', 11);
 define('ITEM_PANTS', 12);
 define('ITEM_FACE', 18);
 
-define('SCHEMA_VERSION', 1);
+define('SCHEMA_VERSION', 2);
 
 function db()
 {
@@ -66,6 +66,20 @@ function db_migrate(PDO $pdo)
     if ($version >= SCHEMA_VERSION) return;
 
     $pdo->beginTransaction();
+    if ($version < 1) {
+        db_create_tables($pdo);
+        db_seed($pdo);
+    }
+    if ($version < 2) {
+        // v2: saved character pose (JSON, see js/Poses.js)
+        $pdo->exec("ALTER TABLE users ADD COLUMN pose TEXT NOT NULL DEFAULT ''");
+    }
+    $pdo->prepare("INSERT OR REPLACE INTO meta (key, value) VALUES ('schema', ?)")->execute(array(SCHEMA_VERSION));
+    $pdo->commit();
+}
+
+function db_create_tables(PDO $pdo)
+{
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -122,9 +136,6 @@ function db_migrate(PDO $pdo)
         );
         CREATE INDEX IF NOT EXISTS friends_target ON friends(target_id, accepted);
     ");
-    db_seed($pdo);
-    $pdo->prepare("INSERT OR REPLACE INTO meta (key, value) VALUES ('schema', ?)")->execute(array(SCHEMA_VERSION));
-    $pdo->commit();
 }
 
 /** Built-in catalog: hats, faces and a few starter clothes (all made by "BOBLOX"). */

@@ -13,6 +13,7 @@ require_once __DIR__ . '/BrickColors.php';
 require_once __DIR__ . '/Auth.php';
 require_once __DIR__ . '/Items.php';
 require_once __DIR__ . '/Avatar.php';
+require_once __DIR__ . '/Poses.php';
 require_once __DIR__ . '/Friends.php';
 require_once __DIR__ . '/Layout.php';
 

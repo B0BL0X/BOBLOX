@@ -169,3 +169,20 @@ td.forumRow img { border: 0; }
 #NewestMembers { width: 525px; }
 #SiteStats { width: 300px; }
 .BulletRow { overflow: hidden; clear: both; }
+
+/* Poses */
+#PosePresets { margin: 0 -2px; }
+.PosePreset { float: left; width: 72px; margin: 2px; padding: 2px 0 3px 0; border: 1px solid #999; background: #fff; text-align: center; font-family: Verdana, Sans-Serif; font-size: 10px; color: #333 !important; text-decoration: none !important; }
+.PosePreset img { display: block; margin: 0 auto; width: 64px; height: 64px; }
+.PosePreset:hover { border-color: #000; background: #e8f0fa; }
+.PosePreset.Selected { border: 2px solid #ff9900; margin: 1px; background: #fff8e8; font-weight: bold; }
+#CustomPose { border-top: 1px solid #bbb; margin-top: 8px; padding-top: 6px; }
+.CustomPoseTitle { font-weight: bold; }
+.CustomPoseTitle #PoseName { font-weight: normal; margin-left: 8px; }
+.PoseJoint { float: left; width: 242px; margin: 4px 6px 4px 0; border: 1px solid #ccc; background: #f6f6f6; padding: 4px 6px; }
+.PoseJoint b { display: block; margin-bottom: 2px; }
+.PoseSlider { line-height: 22px; }
+.PoseSlider label { display: inline-block; width: 46px; }
+.PoseSlider input { width: 140px; vertical-align: middle; }
+.PoseSlider span { display: inline-block; width: 36px; text-align: right; color: #555; }
+.CustomPoseButtons { clear: both; padding-top: 6px; }

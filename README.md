@@ -5,6 +5,22 @@ BOBLOX is a fan-made profile hoster with an old-school look. People sign up, get
 
 It started as a single static HTML page (`src.zip`, kept for reference). It is now a real website.
 
+## Screenshots
+
+**Profile**: character picture, blurb, badges, statistics, friends and what they're wearing.
+
+![A profile page](docs/screenshots/profile.jpg)
+
+**Character page**: recolour body parts, wear hats and clothes, pick a pose or make your own with the sliders.
+
+![The character page with the custom pose editor open](docs/screenshots/character.jpg)
+
+| Home | Catalog |
+| --- | --- |
+| ![The home page](docs/screenshots/home.jpg) | ![The hat catalog](docs/screenshots/catalog.jpg) |
+| **People** | **Create** |
+| ![The people page](docs/screenshots/people.jpg) | ![Uploading a shirt](docs/screenshots/create.jpg) |
+
 ## Features
 
 - **Accounts**: sign up, log in and out, change your password. The **first account ever created becomes the administrator**.
@@ -15,8 +31,11 @@ It started as a single static HTML page (`src.zip`, kept for reference). It is n
   - recolour each body part (head, torso, both arms, both legs) with the 32 colours of the figure's texture,
     or paint everything one colour,
   - wear **Hats**, **Faces**, **T-Shirts**, **Shirts** and **Pants** from your wardrobe,
+  - pick one of 14 **poses** (Standing, Waving, Walking, Running, Cheering, T-Pose, Zombie, Pointing,
+    Sitting, Kicking, Thinking, Dancing, Superhero, Shrugging) or make a **custom pose** with sliders that turn
+    the head and swing or raise each arm and leg,
   - live 3D preview you can turn with the mouse; every change saves by itself over AJAX and
-    updates the picture shown on your profile.
+    updates the picture shown on your profile (in your pose).
 - **Catalog** (`/Catalog.aspx`): 13 hats, 4 faces and some starter clothes, all free. Search and sort by newest / most taken.
 - **Create** (`/My/Create.aspx`): upload your own T-Shirts, Shirts, Pants (585×559 template, downloadable on the page) and Faces.
 - **Friends**: send, accept, decline and remove friend requests; alerts in the header.
@@ -82,7 +101,7 @@ public_html/
   WebServices/*.asmx       AJAX web services (Character, Catalog, Friends, Users)
   Thumbs/*.ashx            avatar and item pictures
   Asset/                   the figure (2006Figure.json + textures), item textures, starter clothes
-  App_Code/                server code (config, database, avatars, layout)
+  App_Code/                server code (config, database, avatars, poses, layout)
   App_Data/                database, uploads, thumbnails (created at runtime, private)
   js/                      Ajax.js, Site.js, Character.js, Avatar3D.js, Hats.js, BrickColors.js, three.js
   css/                     AllCSS.css (original) + Boblox.css
@@ -90,7 +109,16 @@ tools/
   figure/2006Figure.fbx    the figure model
   figure/convert.mjs       turns the FBX into Asset/Figure/2006Figure.json (npm run convert-figure)
   render-hats.cjs          renders the hat pictures in img/Hats
+  render-poses.cjs         renders the pose picker pictures in img/Poses
+  take-screenshots.cjs     fills an empty site with demo characters and takes the README screenshots
+docs/screenshots/          the pictures above
 ```
+
+### Adding poses
+
+Poses live in `public_html/App_Code/Poses.php` as joint angles in degrees: the head turns, nods and tilts, and
+each arm and leg swings forward or back and raises out to the side. Add an entry to `pose_presets()`, then run
+`tools/render-poses.cjs` to make its picture for the pose picker.
 
 ### Adding hats
 

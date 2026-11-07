@@ -231,6 +231,7 @@ window.BOBLOX = BOBLOX;
     var parts = s.figure.parts;
     this.parts = {};
     this.bodyMaterials = {};
+    this._buildJoints(parts);
 
     for (var i = 0; i < BODY_PARTS.length; i++) {
       var name = BODY_PARTS[i];
@@ -246,7 +247,7 @@ window.BOBLOX = BOBLOX;
       var mesh = new THREE.Mesh(buildGeometry(parts[name]), materials);
       mesh.name = name;
       this.parts[name] = mesh;
-      this.figure.add(mesh);
+      this._attach(name, mesh);
     }
 
     // T-shirt decal plane on the torso front
@@ -270,14 +271,14 @@ window.BOBLOX = BOBLOX;
       var ov = overlays[o];
       var om = new THREE.Mesh(overlayGeometry(parts[ov[0]].box, ov[1], ov[2]), ov[3]);
       om.renderOrder = ov[4];
-      this.figure.add(om);
+      this._attach(ov[0], om);
     }
 
     var head = parts.Head.box;
     this.hatAnchor = new THREE.Group();
     this.hatAnchor.position.set((head.min[0] + head.max[0]) / 2, head.max[1], (head.min[2] + head.max[2]) / 2);
     this.hatAnchor.userData.headSize = head.max[0] - head.min[0];
-    this.figure.add(this.hatAnchor);
+    this._attach('Head', this.hatAnchor);
 
     this.isReady = true;
     if (this.appearance) this._apply();
@@ -285,6 +286,53 @@ window.BOBLOX = BOBLOX;
     var cbs = this.readyCallbacks;
     this.readyCallbacks = [];
     for (var k = 0; k < cbs.length; k++) cbs[k](this);
+  };
+
+  // ---- poses: the head, arms and legs hang from joints (neck, shoulders, hips) ----
+  BOBLOX.Avatar3D.prototype._buildJoints = function (parts) {
+    var torsoTop = parts.Torso.box.max[1];
+    function centre(box, k) { return (box.min[k] + box.max[k]) / 2; }
+    var pivots = {
+      Head: [centre(parts.Head.box, 0), torsoTop, 0],
+      RightArm: [centre(parts.RightArm.box, 0), parts.RightArm.box.max[1] - 0.5, 0],
+      LeftArm: [centre(parts.LeftArm.box, 0), parts.LeftArm.box.max[1] - 0.5, 0],
+      RightLeg: [centre(parts.RightLeg.box, 0), parts.RightLeg.box.max[1], 0],
+      LeftLeg: [centre(parts.LeftLeg.box, 0), parts.LeftLeg.box.max[1], 0]
+    };
+    this.joints = {};
+    for (var name in pivots) {
+      if (!pivots.hasOwnProperty(name)) continue;
+      var g = new THREE.Group();
+      g.position.set(pivots[name][0], pivots[name][1], pivots[name][2]);
+      if (name === 'Head') g.rotation.order = 'YXZ';
+      this.figure.add(g);
+      this.joints[name] = g;
+    }
+  };
+
+  // Puts a part (or something stuck to it) under its joint, keeping it where it is.
+  BOBLOX.Avatar3D.prototype._attach = function (partName, object) {
+    var joint = this.joints[partName];
+    if (!joint) { this.figure.add(object); return; }
+    object.position.sub(joint.position);
+    joint.add(object);
+  };
+
+  /*
+   * joints = { Head: {yaw, pitch, roll}, RightArm: {swing, raise}, LeftArm: {...},
+   *            RightLeg: {swing, raise}, LeftLeg: {...} }   (degrees, see App_Code/Poses.php)
+   */
+  BOBLOX.Avatar3D.prototype.setPose = function (joints) {
+    this.poseJoints = joints || {};
+    if (!this.isReady) return;
+    var d = Math.PI / 180, j = this.poseJoints;
+    function a(joint, axis) { return j[joint] && j[joint][axis] ? +j[joint][axis] * d : 0; }
+    this.joints.Head.rotation.set(a('Head', 'pitch'), a('Head', 'yaw'), a('Head', 'roll'));
+    this.joints.RightArm.rotation.set(-a('RightArm', 'swing'), 0, -a('RightArm', 'raise'));
+    this.joints.LeftArm.rotation.set(-a('LeftArm', 'swing'), 0, a('LeftArm', 'raise'));
+    this.joints.RightLeg.rotation.set(-a('RightLeg', 'swing'), 0, -a('RightLeg', 'raise'));
+    this.joints.LeftLeg.rotation.set(-a('LeftLeg', 'swing'), 0, a('LeftLeg', 'raise'));
+    this.render();
   };
 
   BOBLOX.Avatar3D.prototype.ready = function (cb) {
@@ -299,7 +347,8 @@ window.BOBLOX = BOBLOX;
    *   tshirt: '/Uploads/...png' | null,
    *   shirt:  '/Uploads/...png' | null,
    *   pants:  '/Uploads/...png' | null,
-   *   hat:    { mesh: 'tophat', color: '#222222' } | null
+   *   hat:    { mesh: 'tophat', color: '#222222' } | null,
+   *   pose:   { name: 'wave', joints: {...} }  (optional)
    * }
    */
   BOBLOX.Avatar3D.prototype.setAppearance = function (appearance) {
@@ -347,7 +396,7 @@ window.BOBLOX = BOBLOX;
       var hat = BOBLOX.Hats[a.hat.mesh].build(THREE, a.hat.color, this.hatAnchor.userData.headSize);
       this.hatAnchor.add(hat);
     }
-    this.render();
+    this.setPose(a.pose ? a.pose.joints : this.poseJoints);
   };
 
   // Load a clothing texture into a material, ignoring stale responses.
