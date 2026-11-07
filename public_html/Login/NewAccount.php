@@ -6,7 +6,7 @@ if (current_user()) redirect(url('/My/Home.aspx'));
 
 $errors = array();
 $username = '';
-if (REGISTRATION_OPEN && is_post()) {
+if (registration_open() && is_post()) {
     csrf_check_form();
     $username = trim(post_str('UserName'));
     $password = post_str('Password');
@@ -29,7 +29,7 @@ page_header('Sign Up');
 <div id="FrameSignup" class="FormPage">
   <div class="Panel">
     <h4>Sign up and make your character</h4>
-<?php if (!REGISTRATION_OPEN) { ?>
+<?php if (!registration_open()) { ?>
     <div class="PanelContent"><p>Sign ups are closed right now. Please come back later!</p></div>
 <?php } else { ?>
     <form method="post" action="<?php echo h(url('/Login/NewAccount.aspx')); ?>" class="PanelContent">

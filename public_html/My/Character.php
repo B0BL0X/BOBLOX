@@ -20,7 +20,7 @@ BOBLOX.Poses = <?php echo json_encode(pose_client_data(), JSON_HEX_TAG | JSON_HE
 </script>
 <div id="CharacterContainer">
 <?php if (get_int('welcome')) { ?>
-  <div class="WelcomeNote">Welcome to <?php echo h(SITE_NAME); ?>, <?php echo h($me['username']); ?>! Click a body part to change its colour, then pick a hat and some clothes from your wardrobe. Everything saves by itself.</div>
+  <div class="WelcomeNote"><?php echo multiline(str_replace('{name}', $me['username'], setting('welcome_note'))); ?></div>
 <?php } ?>
   <div id="CharacterLeft">
     <div class="Panel" id="AvatarPanel">

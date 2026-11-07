@@ -28,6 +28,9 @@ function current_user($reload = false)
         $user = db_row('SELECT * FROM users WHERE id = ?', array((int)$_SESSION['user_id']));
         if (!$user) {
             unset($_SESSION['user_id']);
+        } elseif ((int)$user['banned'] === 1) {
+            unset($_SESSION['user_id']);
+            $user = null;
         } elseif (time() - (int)$user['last_seen'] > 60) {
             db_query('UPDATE users SET last_seen = ? WHERE id = ?', array(time(), $user['id']));
             $user['last_seen'] = time();
@@ -142,9 +145,12 @@ function attempt_login($username, $password)
     if ($fails >= 5) {
         usleep(min(5, $fails - 4) * 400000);
     }
-    $user = db_row('SELECT id, password_hash FROM users WHERE username = ?', array($username));
+    $user = db_row('SELECT id, password_hash, banned, ban_reason FROM users WHERE username = ?', array($username));
     if ($user && password_verify($password, $user['password_hash'])) {
         $_SESSION['login_fails'] = 0;
+        if ((int)$user['banned'] === 1) {
+            return 'This account has been banned' . ($user['ban_reason'] !== '' ? ': ' . $user['ban_reason'] : '.');
+        }
         if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
             db_query('UPDATE users SET password_hash = ? WHERE id = ?', array(password_hash($password, PASSWORD_DEFAULT), $user['id']));
         }

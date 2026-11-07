@@ -3,7 +3,7 @@
 require_once __DIR__ . '/App_Code/Bootstrap.php';
 
 $owner = db_row('SELECT * FROM users WHERE is_admin = 1 ORDER BY id LIMIT 1');
-$newest = db_all('SELECT * FROM users ORDER BY id DESC LIMIT 8');
+$newest = db_all('SELECT * FROM users WHERE banned = 0 ORDER BY id DESC LIMIT 8');
 $memberCount = (int)db_value('SELECT COUNT(*) FROM users');
 $onlineCount = (int)db_value('SELECT COUNT(*) FROM users WHERE last_seen > ?', array(time() - 300));
 $me = current_user();
@@ -50,10 +50,10 @@ page_header('');
           <td class="forumRow" valign="top">
             <table cellspacing="0" cellpadding="3" border="0" width="100%">
               <tr>
-                <td class="forumRowHighlight"><span class="normalTextSmallBold"><?php echo h(HOME_POST_TITLE); ?></span><br /><span class="normalTextSmaller"> Posted: </span><span class="normalTextSmaller"><?php echo h(date('d F Y g:i A', $owner ? (int)$owner['created'] : time())); ?></span></td>
+                <td class="forumRowHighlight"><span class="normalTextSmallBold"><?php echo h(setting('home_title')); ?></span><br /><span class="normalTextSmaller"> Posted: </span><span class="normalTextSmaller"><?php echo h(date('d F Y g:i A', $owner ? (int)$owner['created'] : time())); ?></span></td>
               </tr>
               <tr>
-                <td colspan="2"><span class="normalTextSmall"><?php echo multiline(HOME_POST_BODY); ?></span></td>
+                <td colspan="2"><span class="normalTextSmall"><?php echo multiline(setting('home_body')); ?></span></td>
               </tr>
               <tr><td height="2"></td></tr>
               <tr>
@@ -102,7 +102,7 @@ page_header('');
             <div class="BulletRow"><img src="<?php echo h(url('/img/bullet2V2.png')); ?>" class="Bullet" alt="" /><p>Dress up your 3D character with colours, hats and clothes.</p></div>
             <div class="BulletRow"><img src="<?php echo h(url('/img/bullet3V3.png')); ?>" class="Bullet" alt="" /><p>Upload your own T-Shirts, Shirts and Pants and make friends.</p></div>
             <div style="clear:both;text-align:center;padding:6px">
-<?php if (REGISTRATION_OPEN) { ?>
+<?php if (registration_open()) { ?>
               <a class="Button" href="<?php echo h(url('/Login/NewAccount.aspx')); ?>">Sign Up</a>
 <?php } ?>
               <a class="Button" href="<?php echo h(url('/Login/Default.aspx')); ?>">Login</a>

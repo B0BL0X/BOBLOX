@@ -104,5 +104,19 @@ const DEMO = [
   await shot(guest, '/Catalog.aspx?c=Hats', 'catalog.jpg', { clip: { x: 40, y: 0, width: 920, height: 760 } });
   await shot(guest, '/Browse.aspx', 'people.jpg', { clip: { x: 40, y: 0, width: 920, height: 520 } });
   await shot(m, '/My/Create.aspx?type=11', 'create.jpg', { clip: { x: 40, y: 0, width: 920, height: 700 } });
+
+  // admin panel
+  await shot(m, '/Admin/Default.aspx', 'admin-dashboard.jpg', { clip: { x: 40, y: 0, width: 920, height: 760 } });
+  await shot(m, '/Admin/Catalog.aspx?new=hat', 'admin-new-hat.jpg', {
+    wait: 1500,
+    clip: { x: 40, y: 0, width: 920, height: 480 },
+    before: async (p) => {
+      await p.fill('#Name', 'Green Beanie');
+      await p.fill('#Description', 'Freshly knitted.');
+      await p.selectOption('#Mesh', 'beanie');
+      await p.$eval('#Color', el => { el.value = '#33aa33'; el.dispatchEvent(new Event('input')); });
+    },
+  });
+  await shot(m, '/Admin/Site.aspx', 'admin-site.jpg', { clip: { x: 40, y: 0, width: 920, height: 900 } });
   await browser.close();
 })();
