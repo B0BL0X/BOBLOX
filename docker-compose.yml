@@ -1,0 +1,23 @@
+# BOBLOX with Docker Compose. Caddy (or any web server) on the host handles HTTPS and forwards to it.
+#
+#   cp .env.example .env      # then edit .env
+#   docker compose up -d --build
+#
+# The site answers on http://127.0.0.1:8080 (only reachable from the server itself).
+services:
+  boblox:
+    build: .
+    image: boblox:latest
+    container_name: boblox
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${BOBLOX_PORT:-8080}:80"
+    volumes:
+      # database, uploads, thumbnails and logins; back this folder up
+      - ./data:/var/www/html/App_Data
+    environment:
+      BOBLOX_SITE_NAME: ${BOBLOX_SITE_NAME:-BOBLOX}
+      BOBLOX_SITE_DOMAIN: ${BOBLOX_SITE_DOMAIN:-}
+      BOBLOX_OWNER_DISCORD_URL: ${BOBLOX_OWNER_DISCORD_URL:-}
+      BOBLOX_CONTACT_EMAIL: ${BOBLOX_CONTACT_EMAIL:-}
+      BOBLOX_REGISTRATION_OPEN: ${BOBLOX_REGISTRATION_OPEN:-true}

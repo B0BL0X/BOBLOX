@@ -1,2 +1,7 @@
 tools/node_modules/
 .DS_Store
+
+# Docker Compose deployment
+/data/
+/.env
+/backups/
