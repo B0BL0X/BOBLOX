@@ -1,0 +1,23 @@
+# BOBLOX site for your system Caddy. Add this to /etc/caddy/Caddyfile
+# (or save it as its own file and add `import /path/to/BOBLOX/deploy/Caddyfile` there),
+# change the domain, then: sudo systemctl reload caddy
+#
+# Caddy gets the HTTPS certificate by itself. The domain's DNS must point at this server
+# and ports 80 and 443 must be open.
+
+boblox.example.com {
+	encode zstd gzip
+
+	# Character uploads are at most a few MB
+	request_body {
+		max_size 10MB
+	}
+
+	# The container from docker-compose.yml (BOBLOX_PORT in .env)
+	reverse_proxy 127.0.0.1:8080
+}
+
+# Optional: send www. to the main domain
+# www.boblox.example.com {
+# 	redir https://boblox.example.com{uri} permanent
+# }

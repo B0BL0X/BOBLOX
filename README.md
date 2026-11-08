@@ -77,9 +77,28 @@ because it is the only way to show the real figure model in a browser.
 
 ## Running it
 
-Requirements: PHP 7.4 or newer with the `pdo_sqlite` and `gd` extensions.
+### On a VPS with Docker and Caddy (easiest)
+
+**Full step-by-step guide: [docs/HOSTING.md](docs/HOSTING.md)**: DNS, Caddy, first admin account, updates,
+backups and troubleshooting.
+
+The short version, on a server that already has Docker and Caddy:
+
+```sh
+git clone https://github.com/B0BL0X/BOBLOX.git && cd BOBLOX
+cp .env.example .env && nano .env        # set BOBLOX_SITE_DOMAIN
+docker compose up -d --build             # BOBLOX now answers on 127.0.0.1:8080
+```
+
+Add the site block from [`deploy/Caddyfile`](deploy/Caddyfile) to your Caddy (change the domain),
+`sudo systemctl reload caddy`, open your domain and sign up: **the first account becomes the admin**.
+
+The compose file only runs BOBLOX (Apache + PHP 8.3). It does not include a Caddy container, so your
+system Caddy handles HTTPS. Everything people make is kept in `./data`; `./deploy/backup.sh` backs it up.
 
 ### On shared hosting (Apache, `public_html`)
+
+Requirements: PHP 7.4 or newer with the `pdo_sqlite` and `gd` extensions.
 
 1. Upload everything inside `public_html/` to your `public_html` folder.
 2. Make sure `public_html/App_Data/` is writable by PHP (the database, uploads and thumbnails go there; `.htaccess`
@@ -99,7 +118,8 @@ Then open http://localhost:8000/.
 
 ## Making it yours
 
-Most things can be changed from the admin panel. The rest is in `public_html/App_Code/Config.php`:
+Most things can be changed from the admin panel. The rest is in `public_html/App_Code/Config.php`. With
+Docker, set them in `.env` instead (`BOBLOX_SITE_NAME`, `BOBLOX_SITE_DOMAIN`, ...; see `.env.example`):
 
 | Setting | What it does |
 | --- | --- |
@@ -128,6 +148,12 @@ public_html/
   App_Data/                database, uploads, thumbnails (created at runtime, private)
   js/                      Ajax.js, Site.js, Character.js, Admin.js, Avatar3D.js, Hats.js, BrickColors.js, three.js
   css/                     AllCSS.css (original) + Boblox.css
+Dockerfile, docker/         the Docker image (Apache + PHP 8.3, PHP and Apache settings, start script)
+docker-compose.yml, .env.example
+deploy/
+  Caddyfile                site block for your system Caddy
+  backup.sh                backs up the database and uploads of a Docker install
+docs/HOSTING.md            how to host BOBLOX on a VPS
 tools/
   figure/2006Figure.fbx    the figure model
   figure/convert.mjs       turns the FBX into Asset/Figure/2006Figure.json (npm run convert-figure)
